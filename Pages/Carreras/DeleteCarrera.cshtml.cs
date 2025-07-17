@@ -1,46 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SistemaAcademicoEntrega.Data;
 using SistemaAcademicoEntrega.Models;
+using SistemaAcademicoEntrega.Servicio;
 
 namespace SistemaAcademicoEntrega.Pages.Carreras
 {
     public class DeleteCarreraModel : PageModel
     {
         [BindProperty]
-
         public Carrera CarreraCur { get; set; }
-        public void OnGet(int id)
+        public IActionResult OnGet(int id)
         {
-            foreach (var carrera in DatosCompartidos.ListCarreras)
+            var carrera = ServicioCarrera.BuscarPorId(id);
+            if (carrera == null)
             {
-                if (carrera.Id == id)
-                {
-                    CarreraCur = carrera;
-                    break;
-                }
-
+                return RedirectToPage("/Carreras/Carrera");
             }
+
+            CarreraCur = carrera;
+            return Page();
         }
 
         public IActionResult OnPost()
         {
-            Carrera eliminarCarrera = null;
-
-            foreach (var carrera in DatosCompartidos.ListCarreras)
-            {
-                if (carrera.Id == CarreraCur.Id)
-                {
-                    eliminarCarrera = carrera;
-                    break;
-                }
-            }
-
-            if (eliminarCarrera != null)
-            {
-                DatosCompartidos.ListCarreras.Remove(eliminarCarrera);
-            }
-
+            ServicioCarrera.EliminarPorId(CarreraCur.Id);
             return RedirectToPage("/Carreras/Carrera");
         }
     }

@@ -27,3 +27,5 @@ C:\Users\Isa\Documents\Proyectos Profecionales\AAAAAAAAAAAAAAAAA\SistemaAcademic
 C:\Users\Isa\Documents\Proyectos Profecionales\AAAAAAAAAAAAAAAAA\SistemaAcademicoEntrega\SistemaAcademicoEntrega\obj\Debug\net8.0\SistemaAcademicoEntrega.pdb
 C:\Users\Isa\Documents\Proyectos Profecionales\AAAAAAAAAAAAAAAAA\SistemaAcademicoEntrega\SistemaAcademicoEntrega\obj\Debug\net8.0\SistemaAcademicoEntrega.genruntimeconfig.cache
 C:\Users\Isa\Documents\Proyectos Profecionales\AAAAAAAAAAAAAAAAA\SistemaAcademicoEntrega\SistemaAcademicoEntrega\obj\Debug\net8.0\ref\SistemaAcademicoEntrega.dll
+C:\Users\Isa\Documents\Proyectos Profecionales\AAAAAAAAAAAAAAAAA\SistemaAcademicoEntrega\SistemaAcademicoEntrega\obj\Debug\net8.0\SistemaAcademicoEntrega.sourcelink.json
+C:\Users\Isa\Documents\Proyectos Profecionales\AAAAAAAAAAAAAAAAA\SistemaAcademicoEntrega\SistemaAcademicoEntrega\bin\Debug\net8.0\Data\Carreras.json
