@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SistemaAcademicoEntrega.Data;
+using SistemaAcademicoEntrega.AccesoDatos;
 using SistemaAcademicoEntrega.Models;
+using SistemaAcademicoEntrega.Repositorio;
+using SistemaAcademicoEntrega.Servicio;
 
 namespace SistemaAcademicoEntrega.Pages.Alumnos
 {
@@ -9,36 +11,29 @@ namespace SistemaAcademicoEntrega.Pages.Alumnos
     {
         [BindProperty]
         public Alumno Alumnos { get; set; }
-        public void OnGet(int id)
+        private readonly ServicioAlumno Servicio;
+        public DeleteAlumnoModel()
         {
-            foreach (var alumno in DatosCompartidos.ListaAlumnos)
-            {
-                if (alumno.Id == id)
-                {
-                    Alumnos = alumno;
-                    break;
-                }
+            IAccesoDatos<Alumno> acceso = new AccesoDatos<Alumno>("Alumnos");
+            IRepositorio<Alumno> repo = new RepositorioCrudJson<Alumno>(acceso);
+            Servicio = new ServicioAlumno(repo);
+        }
 
+        public IActionResult OnGet(int id)
+        {
+            var alumno = Servicio.BuscarPorId(id);
+            if (alumno == null)
+            {
+                return RedirectToPage("/Alumnos/Alumno");
             }
+
+            Alumnos = alumno;
+            return Page();
         }
 
         public IActionResult OnPost()
         {
-            Alumno eliminarAlumno = null;
-
-            foreach (var alumno in DatosCompartidos.ListaAlumnos)
-            {
-                if (alumno.Id == Alumnos.Id)
-                {
-                    eliminarAlumno = alumno;
-                    break;
-                }
-            }
-
-            if (eliminarAlumno != null)
-            {
-                DatosCompartidos.ListaAlumnos.Remove(eliminarAlumno);
-            }
+            Servicio.EliminarPorId(Alumnos.Id);
 
             return RedirectToPage("/Alumnos/Alumno");
         }

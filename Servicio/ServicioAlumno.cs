@@ -3,32 +3,32 @@ using SistemaAcademicoEntrega.Repositorio;
 
 namespace SistemaAcademicoEntrega.Servicio
 {
-    public class ServicioCarrera
+    public class ServicioAlumno
     {
-        private readonly IRepositorio<Carrera> _repo;
-        public ServicioCarrera(IRepositorio<Carrera> repo)
+        private readonly IRepositorio<Alumno> _repo;
+        public ServicioAlumno(IRepositorio<Alumno> repo)
         {
             _repo = repo;
         }
-        public List<Carrera> ObtenerTodos()
+        public List<Alumno> ObtenerTodos()
         {
             return _repo.ObtenerTodos();
         }
-        public Carrera? BuscarPorId(int id)
+        public Alumno? BuscarPorId(int id)
         {
             return _repo.BuscarPorId(id);
         }
-        public void Editar(Carrera carrera)
+        public void Editar(Alumno alumno)
         {
-            _repo.Editar(carrera);
+            _repo.Editar(alumno);
         }
         public void EliminarPorId(int id)
         {
             _repo.EliminarPorId(id);
         }
-        public void Agregar(Carrera carrera)
+        public void Agregar(Alumno alumno)
         {
-            _repo.Agregar(carrera);
+            _repo.Agregar(alumno);
         }
     }
 }

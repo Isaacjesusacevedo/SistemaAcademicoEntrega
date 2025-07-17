@@ -1,22 +1,32 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SistemaAcademicoEntrega.Data;
+using SistemaAcademicoEntrega.AccesoDatos;
 using SistemaAcademicoEntrega.Helpers;
 using SistemaAcademicoEntrega.Models;
+using SistemaAcademicoEntrega.Repositorio;
 using SistemaAcademicoEntrega.Servicio;
 
 namespace SistemaAcademicoEntrega.Pages.Carreras
 {
     public class EditCarreraModel : PageModel
     {
-        public List<string> Modalidades = new List<string>();
         [BindProperty]
         public Carrera CarreraCur { get; set; }
+        public List<string> Modalidades = new List<string>();
+        private readonly ServicioCarrera ServicioCarreras;
+
+        public EditCarreraModel()
+        {
+            IAccesoDatos<Carrera> acceso = new AccesoDatos<Carrera>("Carreras");
+            IRepositorio<Carrera> repo = new RepositorioCrudJson<Carrera>(acceso);
+            ServicioCarreras = new ServicioCarrera(repo);
+        }
         public void OnGet(int id)
         {
             Modalidades = OpcionesModalidad.lista;
 
-            Carrera? carrera = ServicioCarrera.BuscarPorId(id);
+            Carrera? carrera = ServicioCarreras.BuscarPorId(id);
+
             if (carrera != null)
             {
                 CarreraCur = carrera;
@@ -31,7 +41,7 @@ namespace SistemaAcademicoEntrega.Pages.Carreras
                 return Page();
             }
 
-            ServicioCarrera.EditarCarrera(CarreraCur);
+            ServicioCarreras.Editar(CarreraCur);
 
             return RedirectToPage("/Carreras/Carrera");
         }

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SistemaAcademicoEntrega.Data;
+using SistemaAcademicoEntrega.AccesoDatos;
 using SistemaAcademicoEntrega.Models;
+using SistemaAcademicoEntrega.Repositorio;
+using SistemaAcademicoEntrega.Servicio;
 
 namespace SistemaAcademicoEntrega.Pages.Alumnos
 {
@@ -9,46 +11,31 @@ namespace SistemaAcademicoEntrega.Pages.Alumnos
     {
         [BindProperty]
         public Alumno Alumnos { get; set; }
+        private readonly ServicioAlumno Servicio;
+        public EditAlumnoModel()
+        {
+            IAccesoDatos<Alumno> acceso = new AccesoDatos<Alumno>("Alumnos");
+            IRepositorio<Alumno> repo = new RepositorioCrudJson<Alumno>(acceso);
+            Servicio = new ServicioAlumno(repo);
+        }
         public void OnGet(int id)
         {
-            foreach (var alumno in DatosCompartidos.ListaAlumnos)
+            Alumno? alumno = Servicio.BuscarPorId(id);
+
+            if (alumno != null)
             {
-                if (alumno.Id == id)
-                {
-                    Alumnos = alumno;
-                    break;
-                }
+                Alumnos = alumno;
             }
         }
         public IActionResult OnPost()
         {
-            if (DatosCompartidos.ListaAlumnos.Any(alumno => alumno.Email == Alumnos.Email && alumno.Id != Alumnos.Id))
-            {
-                ModelState.AddModelError("Alumnos.Email", "El correo electrónico ya está registrado.");
-            }
-
-            if (DatosCompartidos.ListaAlumnos.Any(alumno => alumno.Dni == Alumnos.Dni && alumno.Id != Alumnos.Id))
-            {
-                ModelState.AddModelError("Alumnos.Dni", "El DNI ya está registrado.");
-            }
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            foreach (var alumno in DatosCompartidos.ListaAlumnos)
-            {
-                if (alumno.Id == Alumnos.Id)
-                {
-                    alumno.Nombre = Alumnos.Nombre;
-                    alumno.Apellido = Alumnos.Apellido;
-                    alumno.Dni = Alumnos.Dni;
-                    alumno.Email = Alumnos.Email;
-                    alumno.FechaNacimiento = Alumnos.FechaNacimiento;
-                    break;
+            Servicio.Editar(Alumnos);
 
-                }
-            }
             return RedirectToPage("/Alumnos/Alumno");
         }
     }
